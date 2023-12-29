@@ -1,0 +1,31 @@
+name: update_ca
+
+on:
+  workflow_dispatch:
+   
+  push:
+    branches:
+      - 'dev'
+      - 'test'
+      - 'main'  
+      
+env:
+  ACR_LOGIN_SERVER: "caimagesintegrationstatic${{ github.ref_name == 'main' && 'prod' || github.ref_name }} .azurecr.io"
+
+jobs:
+  deploy-infra:
+    name: 'Deploy Images'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
+
+      - run: az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
+
+      - run: docker build . -t ${{ secrets.ACR_LOGIN_SERVER }}/sample:${{ github.sha }}
+
+      - run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/sample:${{ github.sha }}
