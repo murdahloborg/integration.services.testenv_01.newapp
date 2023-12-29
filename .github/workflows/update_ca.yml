@@ -12,6 +12,10 @@ on:
 env:
   ACR_LOGIN_SERVER: "caimagesintegrationstatic${{ github.ref_name == 'main' && 'prod' || github.ref_name }} .azurecr.io"
 
+permissions:
+  id-token: write
+  contents: read  
+  
 jobs:
   deploy-infra:
     name: 'Deploy Images'
