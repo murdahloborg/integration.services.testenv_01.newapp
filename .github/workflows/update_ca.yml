@@ -33,6 +33,6 @@ jobs:
 
       - run: az acr login --name ${{ env.ACR_LOGIN_SERVER }}
 
-      - run: docker build . -t ${{ env.ACR_LOGIN_SERVER }}/sample:${{ github.sha }}
+      - run: docker build Ecco.Integrations.WebService -t ${{ env.ACR_LOGIN_SERVER }}/sample:${{ github.sha }}
 
       - run: docker push ${{ env.ACR_LOGIN_SERVER }}/sample:${{ github.sha }}
