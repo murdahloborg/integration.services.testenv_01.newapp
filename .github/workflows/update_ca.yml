@@ -10,7 +10,7 @@ on:
       - 'main'  
       
 env:
-  ACR_LOGIN_SERVER: "caimagesintegrationstatic${{ github.ref_name == 'main' && 'prod' || github.ref_name }} .azurecr.io"
+  ACR_LOGIN_SERVER: "caimagesintegrationstatic${{ github.ref_name == 'main' && 'prod' || github.ref_name }}.azurecr.io"
 
 permissions:
   id-token: write
