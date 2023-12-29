@@ -11,6 +11,7 @@ on:
       
 env:
   ACR_LOGIN_SERVER: "caimagesintegrationstatic${{ github.ref_name == 'main' && 'prod' || github.ref_name }}.azurecr.io"
+  DOCKER_TAG: 
 
 permissions:
   id-token: write
@@ -33,6 +34,6 @@ jobs:
 
       - run: az acr login --name ${{ env.ACR_LOGIN_SERVER }}
 
-      - run: docker build . -t ${{ env.ACR_LOGIN_SERVER }}/sample:${{ github.sha }} -f ./Ecco.Integrations.WebService/Dockerfile
+      - run: docker build . -t ${{ env.ACR_LOGIN_SERVER }}/${{ vars.AZ_ENV_NAME }}-${{ vars.CA_NAME }}:${{ github.sha }} -f ./Ecco.Integrations.WebService/Dockerfile
 
-      - run: docker push ${{ env.ACR_LOGIN_SERVER }}/sample:${{ github.sha }}
+      - run: docker push ${{ env.ACR_LOGIN_SERVER }}/${{ vars.AZ_ENV_NAME }}-${{ vars.CA_NAME }}:${{ github.sha }}
